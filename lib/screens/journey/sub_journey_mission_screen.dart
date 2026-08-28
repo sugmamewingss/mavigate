@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import '../../core/theme/app_colors.dart';
 import '../../models/journey_model.dart';
+import '../../widgets/dialogs/sub_journey_completion_dialog.dart';
 import '../../widgets/navigation/custom_bottom_nav_bar.dart';
 
 class SubJourneyMissionScreen extends StatefulWidget {
   final String missionTitle;
   final String missionSubtitle;
+  final String subJourneyCode; // e.g. "1.1"
   final List<MissionStepData> steps;
   final VoidCallback? onMissionCompleted;
 
@@ -13,6 +15,7 @@ class SubJourneyMissionScreen extends StatefulWidget {
     super.key,
     required this.missionTitle,
     required this.missionSubtitle,
+    this.subJourneyCode = '1.1',
     required this.steps,
     this.onMissionCompleted,
   });
@@ -24,23 +27,26 @@ class SubJourneyMissionScreen extends StatefulWidget {
 class _SubJourneyMissionScreenState extends State<SubJourneyMissionScreen> {
   int _currentStepIndex = 0;
 
-  void _handleNext() {
+  void _handleNext() async {
     if (_currentStepIndex < widget.steps.length - 1) {
       setState(() {
         _currentStepIndex++;
       });
     } else {
-      // Completed all steps in this mission!
-      widget.onMissionCompleted?.call();
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('🎉 Misi "${widget.missionTitle}" berhasil diselesaikan!'),
-          backgroundColor: const Color(0xFF10B981),
-          behavior: SnackBarBehavior.floating,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-        ),
+      // Step 7 completed -> Show Completion Dialog (Pose 16.png)
+      final confirmed = await SubJourneyCompletionDialog.show(
+        context,
+        title: 'Sub-Journey ${widget.subJourneyCode} selesai! 🎉',
+        description:
+            'Kamu sudah mengenal beberapa hal penting untuk memulai kehidupan perkuliahan.',
+        buttonText: 'Lanjutkan →',
+        mascotAsset: 'assets/images/Pose 16.png',
       );
-      Navigator.of(context).pop(true);
+
+      if (confirmed == true && mounted) {
+        widget.onMissionCompleted?.call();
+        Navigator.of(context).pop(true);
+      }
     }
   }
 
@@ -58,7 +64,6 @@ class _SubJourneyMissionScreenState extends State<SubJourneyMissionScreen> {
   Widget build(BuildContext context) {
     final totalSteps = widget.steps.length;
     final currentStep = widget.steps[_currentStepIndex];
-    final isLastStep = _currentStepIndex == totalSteps - 1;
 
     return Scaffold(
       backgroundColor: AppColors.backgroundDark,
@@ -180,7 +185,7 @@ class _SubJourneyMissionScreenState extends State<SubJourneyMissionScreen> {
                         ),
                         child: Column(
                           children: [
-                            // Topic Name (e.g. "Jadwal", "KRS", "SKS")
+                            // Topic Name (e.g. "Jadwal", "KRS", "SKS", "SIAM", "Gapura", "Brone", "Pusat Layanan...")
                             Text(
                               currentStep.topic,
                               textAlign: TextAlign.center,
@@ -256,7 +261,7 @@ class _SubJourneyMissionScreenState extends State<SubJourneyMissionScreen> {
 
                   const SizedBox(height: 16),
 
-                  // 5. Action Button: "Lanjut >" or "Selesai Misi >"
+                  // 5. Action Button: "Lanjut >"
                   SizedBox(
                     width: double.infinity,
                     height: 52,
@@ -270,18 +275,18 @@ class _SubJourneyMissionScreenState extends State<SubJourneyMissionScreen> {
                           borderRadius: BorderRadius.circular(14),
                         ),
                       ),
-                      child: Row(
+                      child: const Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            isLastStep ? 'Selesaikan Misi' : 'Lanjut',
-                            style: const TextStyle(
+                            'Lanjut',
+                            style: TextStyle(
                               fontSize: 15,
                               fontWeight: FontWeight.w700,
                             ),
                           ),
-                          const SizedBox(width: 6),
-                          const Icon(Icons.chevron_right_rounded, size: 20),
+                          SizedBox(width: 6),
+                          Icon(Icons.chevron_right_rounded, size: 20),
                         ],
                       ),
                     ),

@@ -112,37 +112,37 @@ class _JourneyScreenState extends State<JourneyScreen> {
           topic: 'KRS',
           title: 'Kenali Dunia Perkuliahan',
           description:
-              'Pelajari fungsi KRS dan bagaimana informasi ini membantu kamu mengetahui rencana studi semester.',
+              'Pelajari fungsi KRS dan bagaimana informasi ini membantu kamu mengetahui waktu perkuliahan.',
         ),
         MissionStepData(
           topic: 'SKS',
           title: 'Kenali Dunia Perkuliahan',
           description:
-              'Pelajari fungsi SKS dan bagaimana bobot pembelajaran dihitung dalam setiap mata kuliah.',
+              'Pelajari fungsi SKS dan bagaimana informasi ini membantu kamu mengetahui waktu perkuliahan.',
         ),
         MissionStepData(
-          topic: 'Dosen PA / Wali',
+          topic: 'SIAM',
           title: 'Kenali Dunia Perkuliahan',
           description:
-              'Pahami peran Dosen Pembimbing Akademik dalam mengarahkan rencana studimu setiap semester.',
+              'Pelajari fungsi SIAM dan bagaimana informasi ini membantu kamu mengetahui waktu perkuliahan.',
         ),
         MissionStepData(
-          topic: 'IP & IPK',
+          topic: 'Gapura',
           title: 'Kenali Dunia Perkuliahan',
           description:
-              'Pahami cara perhitungan Indeks Prestasi (IP) dan Indeks Prestasi Kumulatif (IPK) untuk evaluasi belajar.',
+              'Pelajari fungsi Gapura dan bagaimana informasi ini membantu kamu mengetahui waktu perkuliahan.',
         ),
         MissionStepData(
-          topic: 'Organisasi & UKM',
+          topic: 'Brone',
           title: 'Kenali Dunia Perkuliahan',
           description:
-              'Temukan wadah eksplorasi minat, bakat, kepemimpinan, dan jejaring pertemanan di lingkungan kampus.',
+              'Pelajari fungsi Brone dan bagaimana informasi ini membantu kamu mengetahui waktu perkuliahan.',
         ),
         MissionStepData(
-          topic: 'Tips Sukses MABA',
+          topic: 'Pusat Layanan Akademik & Halo FILKOM',
           title: 'Kenali Dunia Perkuliahan',
           description:
-              'Tips mengelola waktu, menjaga motivasi, dan menikmati serunya kehidupan sebagai mahasiswa baru.',
+              'Pelajari fungsi Pusat Layanan Akademik & Halo FILKOM dan bagaimana informasi ini membantu kamu mengetahui waktu perkuliahan.',
         ),
       ];
     } else if (item.id == 'calender') {

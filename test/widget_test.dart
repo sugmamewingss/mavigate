@@ -186,29 +186,37 @@ void main() {
     await tester.tap(find.widgetWithText(ElevatedButton, 'Lanjut'));
     await tester.pumpAndSettle();
     expect(find.text('4 / 7'), findsOneWidget);
-    expect(find.text('Dosen PA / Wali'), findsOneWidget);
+    expect(find.text('SIAM'), findsOneWidget);
 
     // Step 4 -> 5
     await tester.tap(find.widgetWithText(ElevatedButton, 'Lanjut'));
     await tester.pumpAndSettle();
     expect(find.text('5 / 7'), findsOneWidget);
-    expect(find.text('IP & IPK'), findsOneWidget);
+    expect(find.text('Gapura'), findsOneWidget);
 
     // Step 5 -> 6
     await tester.tap(find.widgetWithText(ElevatedButton, 'Lanjut'));
     await tester.pumpAndSettle();
     expect(find.text('6 / 7'), findsOneWidget);
-    expect(find.text('Organisasi & UKM'), findsOneWidget);
+    expect(find.text('Brone'), findsOneWidget);
 
     // Step 6 -> 7
     await tester.tap(find.widgetWithText(ElevatedButton, 'Lanjut'));
     await tester.pumpAndSettle();
     expect(find.text('7 / 7'), findsOneWidget);
-    expect(find.text('Tips Sukses MABA'), findsOneWidget);
-    expect(find.text('Selesaikan Misi'), findsOneWidget);
+    expect(find.text('Pusat Layanan Akademik & Halo FILKOM'), findsOneWidget);
 
-    // Complete Mission 1 (Orientation)
-    await tester.tap(find.widgetWithText(ElevatedButton, 'Selesaikan Misi'));
+    // Complete Mission 1 (Orientation) -> Triggers Completion Dialog (Pose 16.png)
+    await tester.tap(find.widgetWithText(ElevatedButton, 'Lanjut'));
+    await tester.pumpAndSettle();
+
+    // Verify Completion Dialog
+    expect(find.text('Sub-Journey 1.1 selesai! 🎉'), findsOneWidget);
+    expect(find.text('Kamu sudah mengenal beberapa hal penting untuk memulai kehidupan perkuliahan.'), findsOneWidget);
+    expect(find.text('Lanjutkan →'), findsOneWidget);
+
+    // Tap "Lanjutkan →" to finish modal and return to Journey
+    await tester.tap(find.text('Lanjutkan →'));
     await tester.pumpAndSettle();
 
     // 13. Back on Journey Screen: Orientation completed!
