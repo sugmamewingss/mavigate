@@ -24,11 +24,13 @@ class CustomBottomNavBar extends StatelessWidget {
       ),
       child: SafeArea(
         top: false,
-        child: Center(
+        child: Align(
+          alignment: Alignment.center,
+          heightFactor: 1.0,
           child: ConstrainedBox(
             constraints: const BoxConstraints(maxWidth: 440),
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
               child: Row(
                 children: [
                   Expanded(
@@ -80,7 +82,7 @@ class CustomBottomNavBar extends StatelessWidget {
       behavior: HitTestBehavior.opaque,
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),
-        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
+        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 6),
         decoration: BoxDecoration(
           color: isSelected ? const Color(0xFF1E293B) : Colors.transparent,
           borderRadius: BorderRadius.circular(16),

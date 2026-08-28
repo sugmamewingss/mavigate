@@ -48,33 +48,37 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Center(
           child: ConstrainedBox(
             constraints: const BoxConstraints(maxWidth: 440),
-            child: IndexedStack(
-              index: _currentNavIndex,
-              children: [
-                // Tab 0: Beranda
-                _buildBerandaTab(displayName, userInitial),
+            child: SizedBox.expand(
+              child: IndexedStack(
+                index: _currentNavIndex,
+                children: [
+                  // Tab 0: Beranda
+                  _buildBerandaTab(displayName, userInitial),
 
-                // Tab 1: Journey
-                _buildPlaceholderTab(
-                  icon: Icons.explore_rounded,
-                  title: 'Journey Section',
-                  description: 'Section Journey sedang disiapkan dan akan kita lanjutkan berikutnya! 🧭',
-                ),
+                  // Tab 1: Journey
+                  _buildPlaceholderTab(
+                    icon: Icons.explore_rounded,
+                    title: 'Journey Section',
+                    description:
+                        'Section Journey sedang disiapkan dan akan kita lanjutkan berikutnya! 🧭',
+                  ),
 
-                // Tab 2: Kalender
-                _buildPlaceholderTab(
-                  icon: Icons.calendar_today_rounded,
-                  title: 'Kalender Section',
-                  description: 'Jadwal dan aktivitas perkuliahan kamu.',
-                ),
+                  // Tab 2: Kalender
+                  _buildPlaceholderTab(
+                    icon: Icons.calendar_today_rounded,
+                    title: 'Kalender Section',
+                    description: 'Jadwal dan aktivitas perkuliahan kamu.',
+                  ),
 
-                // Tab 3: Profil
-                _buildPlaceholderTab(
-                  icon: Icons.person_rounded,
-                  title: 'Profil Pengguna',
-                  description: 'Kelola data diri, target semester, dan pengaturan akun.',
-                ),
-              ],
+                  // Tab 3: Profil
+                  _buildPlaceholderTab(
+                    icon: Icons.person_rounded,
+                    title: 'Profil Pengguna',
+                    description:
+                        'Kelola data diri, target semester, dan pengaturan akun.',
+                  ),
+                ],
+              ),
             ),
           ),
         ),
