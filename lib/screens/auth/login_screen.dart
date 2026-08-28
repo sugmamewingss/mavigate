@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../core/theme/app_colors.dart';
+import '../../services/auth_database_service.dart';
 import '../../widgets/common/mavigate_logo.dart';
 import '../home/home_screen.dart';
 import 'forgot_password_screen.dart';
@@ -24,7 +25,7 @@ class _LoginScreenState extends State<LoginScreen> {
     super.dispose();
   }
 
-  void _handleLogin() {
+  void _handleLogin() async {
     final email = _emailController.text.trim();
     final password = _passwordController.text;
 
@@ -40,12 +41,35 @@ class _LoginScreenState extends State<LoginScreen> {
       return;
     }
 
-    // Direct login simulation
-    Navigator.of(context).pushReplacement(
-      MaterialPageRoute(
-        builder: (context) => HomeScreen(userEmail: email),
-      ),
+    // Verify against local auth database
+    final user = await AuthDatabaseService().loginUser(
+      email: email,
+      password: password,
     );
+
+    if (user == null && mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: const Text('Email atau password salah'),
+          backgroundColor: const Color(0xFFEF4444),
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          duration: const Duration(seconds: 2),
+        ),
+      );
+      return;
+    }
+
+    if (user != null && mounted) {
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+          builder: (context) => HomeScreen(
+            userName: user.name,
+            userEmail: user.email,
+          ),
+        ),
+      );
+    }
   }
 
   void _handleForgotPassword() {

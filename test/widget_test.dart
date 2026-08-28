@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mavigate/main.dart';
+import 'package:mavigate/services/auth_database_service.dart';
 
 void main() {
-  testWidgets('MaviGate full comprehensive 4-tab app test: Onboarding, Auth, Beranda, Journey 100%, Kalender, and Profil', (WidgetTester tester) async {
+  setUp(() {
+    AuthDatabaseService().clearDatabase();
+  });
+
+  testWidgets('MaviGate full comprehensive 4-tab app test: Onboarding, Auth with local database validation, Beranda, Journey 100%, Kalender, and Profil', (WidgetTester tester) async {
     tester.view.physicalSize = const Size(800, 1200);
     tester.view.devicePixelRatio = 1.0;
     addTearDown(() {
@@ -96,10 +101,23 @@ void main() {
     await tester.tap(find.text('Ayo Tentukan Targetmu'));
     await tester.pumpAndSettle();
 
-    // 8. Auth: Login Screen
+    // 8. Auth: Login Screen - Test Invalid Login (Unregistered user)
     expect(find.text('Selamat datang kembali 👋'), findsOneWidget);
     expect(find.text('Siap untuk bernavigasi?'), findsOneWidget);
     expect(find.text('Lupa kata sandi?'), findsOneWidget);
+
+    // Attempt login without registered user in database
+    final loginFields = find.byType(TextField);
+    await tester.enterText(loginFields.at(0), 'unregistered@email.com');
+    await tester.enterText(loginFields.at(1), 'wrongpass');
+    await tester.tap(find.widgetWithText(ElevatedButton, 'Masuk'));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 500));
+
+    // Verify Error SnackBar appears: "Email atau password salah"
+    expect(find.text('Email atau password salah'), findsOneWidget);
+    await tester.pump(const Duration(seconds: 2));
+    await tester.pumpAndSettle();
 
     // Test Forgot Password flow
     await tester.tap(find.text('Lupa kata sandi?'));
@@ -124,7 +142,7 @@ void main() {
     expect(find.text('Kata Sandi'), findsOneWidget);
     expect(find.text('Konfirmasi Kata Sandi'), findsOneWidget);
 
-    // Fill registration form
+    // Fill registration form with user credentials
     final textFields = find.byType(TextField);
     await tester.enterText(textFields.at(0), 'Raven');
     await tester.enterText(textFields.at(1), 'raven@mavigate.com');
@@ -134,6 +152,8 @@ void main() {
     // Tap "Buat Akun"
     await tester.ensureVisible(find.text('Buat Akun'));
     await tester.tap(find.text('Buat Akun'));
+    await tester.pump();
+    await tester.pump(const Duration(seconds: 2));
     await tester.pumpAndSettle();
 
     // 10. Dashboard: Home Screen (Beranda - Tab 0)
@@ -271,6 +291,8 @@ void main() {
 
     expect(find.text('Profil Saya'), findsOneWidget);
     expect(find.text('Perjalananmu, arahmu.'), findsOneWidget);
+    expect(find.text('Raven'), findsOneWidget);
+    expect(find.text('raven@mavigate.com'), findsOneWidget);
     expect(find.text('Mahasiswa Baru'), findsOneWidget);
     expect(find.text('CURRENT JOURNEY'), findsOneWidget);
     expect(find.text('Achiever'), findsOneWidget);
@@ -283,5 +305,27 @@ void main() {
     expect(find.text('ACCOUNT'), findsOneWidget);
     expect(find.text('Account Settings'), findsOneWidget);
     expect(find.text('Log Out'), findsOneWidget);
+
+    // 20. TEST LOGOUT AND RE-LOGIN WITH STORED CREDENTIALS
+    await tester.tap(find.text('Log Out'));
+    await tester.pumpAndSettle();
+
+    // Confirm dialog
+    expect(find.text('Konfirmasi Keluar'), findsOneWidget);
+    await tester.tap(find.widgetWithText(ElevatedButton, 'Keluar'));
+    await tester.pumpAndSettle();
+
+    // Now back on LoginScreen
+    expect(find.text('Selamat datang kembali 👋'), findsOneWidget);
+
+    // Log in with registered user
+    final reLoginFields = find.byType(TextField);
+    await tester.enterText(reLoginFields.at(0), 'raven@mavigate.com');
+    await tester.enterText(reLoginFields.at(1), 'secret123');
+    await tester.tap(find.widgetWithText(ElevatedButton, 'Masuk'));
+    await tester.pumpAndSettle();
+
+    // Successfully back into Home with user's name!
+    expect(find.text('Selamat pagi, Raven 👋'), findsOneWidget);
   });
 }

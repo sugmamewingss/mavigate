@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../core/theme/app_colors.dart';
+import '../../services/auth_database_service.dart';
 import '../../widgets/common/mavigate_logo.dart';
 import '../home/home_screen.dart';
 
@@ -28,7 +29,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     super.dispose();
   }
 
-  void _handleRegister() {
+  void _handleRegister() async {
     final name = _nameController.text.trim();
     final email = _emailController.text.trim();
     final password = _passwordController.text;
@@ -58,15 +59,35 @@ class _RegisterScreenState extends State<RegisterScreen> {
       return;
     }
 
-    Navigator.of(context).pushAndRemoveUntil(
-      MaterialPageRoute(
-        builder: (context) => HomeScreen(
-          userName: name,
-          userEmail: email,
-        ),
-      ),
-      (route) => false,
+    final success = await AuthDatabaseService().registerUser(
+      name: name,
+      email: email,
+      password: password,
     );
+
+    if (!success && mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: const Text('Email sudah terdaftar! Silakan gunakan email lain atau masuk.'),
+          backgroundColor: const Color(0xFFEF4444),
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        ),
+      );
+      return;
+    }
+
+    if (mounted) {
+      Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(
+          builder: (context) => HomeScreen(
+            userName: name,
+            userEmail: email,
+          ),
+        ),
+        (route) => false,
+      );
+    }
   }
 
   @override
