@@ -3,7 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mavigate/main.dart';
 
 void main() {
-  testWidgets('MaviGate full end-to-end journey from splash to home screen', (WidgetTester tester) async {
+  testWidgets('MaviGate full end-to-end journey including Forgot Password, Beranda, and Journey navigation', (WidgetTester tester) async {
     tester.view.physicalSize = const Size(800, 1200);
     tester.view.devicePixelRatio = 1.0;
     addTearDown(() {
@@ -99,7 +99,19 @@ void main() {
     // 8. Auth: Login Screen
     expect(find.text('Selamat datang kembali 👋'), findsOneWidget);
     expect(find.text('Siap untuk bernavigasi?'), findsOneWidget);
-    expect(find.text('Buat akun'), findsOneWidget);
+    expect(find.text('Lupa kata sandi?'), findsOneWidget);
+
+    // Test Forgot Password flow
+    await tester.tap(find.text('Lupa kata sandi?'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Lupa kata sandi?'), findsOneWidget);
+    expect(find.text('Kirim Tautan Atur Ulang'), findsOneWidget);
+    expect(find.text('Kembali'), findsOneWidget);
+
+    // Tap "Kembali" to return to LoginScreen
+    await tester.tap(find.text('Kembali'));
+    await tester.pumpAndSettle();
 
     // Tap "Buat akun" to open Register Screen
     await tester.tap(find.text('Buat akun'));

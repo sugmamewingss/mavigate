@@ -34,15 +34,15 @@ class AchieverJourneyCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Top Row: Trophy Badge & Mascot (Pose 15.png)
+          // Top Section with Trophy and Mascot (Pose 15.png)
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Trophy Circle Icon
               Container(
-                width: 42,
-                height: 42,
+                width: 44,
+                height: 44,
                 decoration: const BoxDecoration(
                   color: Color(0xFF38202A),
                   shape: BoxShape.circle,
@@ -51,15 +51,15 @@ class AchieverJourneyCard extends StatelessWidget {
                   child: Icon(
                     Icons.emoji_events_rounded,
                     color: Color(0xFFF87171),
-                    size: 22,
+                    size: 24,
                   ),
                 ),
               ),
 
-              // Mascot Owl (Pose 15.png)
+              // Owl Mascot (Pose 15.png)
               SizedBox(
-                width: 82,
-                height: 75,
+                width: 92,
+                height: 84,
                 child: Image.asset(
                   'assets/images/Pose 15.png',
                   fit: BoxFit.contain,
@@ -67,7 +67,7 @@ class AchieverJourneyCard extends StatelessWidget {
                     return const Center(
                       child: Icon(
                         Icons.school_rounded,
-                        size: 48,
+                        size: 52,
                         color: AppColors.electricBlue,
                       ),
                     );
@@ -77,13 +77,13 @@ class AchieverJourneyCard extends StatelessWidget {
             ],
           ),
 
-          const SizedBox(height: 12),
+          const SizedBox(height: 10),
 
-          // Title
+          // Title "Achiever Journey"
           Text(
             title,
             style: const TextStyle(
-              fontSize: 17,
+              fontSize: 18,
               fontWeight: FontWeight.w800,
               color: Colors.white,
               letterSpacing: -0.3,
