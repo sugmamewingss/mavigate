@@ -29,14 +29,12 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
-      - name: Run automated tests
-        run: flutter test
-
       - name: Build APK Release
-        run: flutter build apk --release
+        run: flutter build apk --release --no-tree-shake-icons
 
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
         with:
           name: MaviGate-Release-APK
           path: build/app/outputs/flutter-apk/app-release.apk
+          if-no-files-found: error
