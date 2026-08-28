@@ -500,9 +500,10 @@ class _BuildScheduleScreenState extends State<BuildScheduleScreen> {
                     ),
                   ),
 
-                  // Bottom Button: "Ayo Tentukan Targetmu >"
+                  // Bottom Button: "Selesai >"
                   LockedAnimatedButton(
-                    text: 'Ayo Tentukan Targetmu',
+                    key: const Key('build_schedule_finish_button'),
+                    text: 'Selesai',
                     isLocked: !hasClasses,
                     onPressed: () {
                       ScaffoldMessenger.of(context).removeCurrentSnackBar();

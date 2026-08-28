@@ -3,10 +3,13 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mavigate/main.dart';
 
 void main() {
-  testWidgets('MaviGate full onboarding and schedule builder flow test', (WidgetTester tester) async {
-    tester.view.physicalSize = const Size(1080, 2400);
-    tester.view.devicePixelRatio = 2.0;
-    addTearDown(() => tester.view.resetPhysicalSize());
+  testWidgets('MaviGate complete onboarding and MABA completion flow test', (WidgetTester tester) async {
+    tester.view.physicalSize = const Size(800, 1200);
+    tester.view.devicePixelRatio = 1.0;
+    addTearDown(() {
+      tester.view.resetPhysicalSize();
+      tester.view.resetDevicePixelRatio();
+    });
 
     // Build app
     await tester.pumpWidget(const MaviGateApp());
@@ -16,7 +19,7 @@ void main() {
     await tester.pump(const Duration(seconds: 3));
     await tester.pumpAndSettle();
 
-    // Page 1: Landing Page
+    // Page 1: Landing Page with Maskot
     expect(find.text('College is confusing.\nLet\'s navigate it.'), findsOneWidget);
     await tester.tap(find.text('Ayo Mulai'));
     await tester.pumpAndSettle();
@@ -29,6 +32,8 @@ void main() {
     // Page 3: Stepper ("Ayo siapkan kamu kuliah!")
     expect(find.text('Ayo siapkan kamu kuliah!'), findsOneWidget);
     expect(find.text('Kamu resmi MABA!'), findsOneWidget);
+    expect(find.text('Atur Prioritasmu!'), findsOneWidget);
+    expect(find.text('Buat Jadwal Kelasmu!'), findsOneWidget);
 
     // Tap "Buat Jadwal" to enter Build Your Schedule screen
     await tester.ensureVisible(find.text('Buat Jadwal'));
@@ -42,22 +47,27 @@ void main() {
     // Add a class "Bla bla bla"
     await tester.enterText(find.byType(TextField), 'Bla bla bla');
     await tester.tap(find.text('Tambah Kelas'));
-    await tester.pump();
-    await tester.pump(const Duration(milliseconds: 300));
+    // Wait for SnackBar duration to complete
+    await tester.pump(const Duration(seconds: 2));
+    await tester.pumpAndSettle();
 
     // Verify class is added
     expect(find.text('Bla bla bla'), findsOneWidget);
     expect(find.text('Senin, 08:00 - 10:00'), findsOneWidget);
     expect(find.text('1 kelas ditambahkan'), findsOneWidget);
 
-    // Tap Back button
-    await tester.tap(find.byKey(const Key('build_schedule_back_button')));
+    // Tap "Selesai" using Key
+    await tester.tap(find.byKey(const Key('build_schedule_finish_button')), warnIfMissed: false);
     await tester.pump();
-    await tester.pump(const Duration(milliseconds: 400));
-    await tester.pump(const Duration(milliseconds: 400));
+    await tester.pump(const Duration(milliseconds: 500));
+    await tester.pumpAndSettle();
 
-    // Verify Stepper is shown with completed state
-    expect(find.text('Ayo siapkan kamu kuliah!'), findsOneWidget);
-    expect(find.text('Completed'), findsWidgets);
+    // Verify Completion Milestone Screen ("🎉 Selamat, tahap MABA selesai!!!")
+    expect(find.text('🎉 Selamat, tahap MABA\nselesai!!!'), findsOneWidget);
+    expect(find.text('3 / 3 Selesai'), findsOneWidget);
+    expect(find.text('Dasar Kampus'), findsOneWidget);
+    expect(find.text('Rencana Prioritas'), findsOneWidget);
+    expect(find.text('Jadwal Kelas'), findsOneWidget);
+    expect(find.text('Ayo Tentukan Targetmu'), findsOneWidget);
   });
 }

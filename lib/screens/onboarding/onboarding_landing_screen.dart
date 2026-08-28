@@ -123,11 +123,11 @@ class OnboardingLandingScreen extends StatelessWidget {
                           ],
                         ),
                         clipBehavior: Clip.antiAlias,
+                        padding: const EdgeInsets.all(16),
                         child: Image.asset(
-                          'assets/images/onboarding_hero_1.jpg',
-                          fit: BoxFit.cover,
+                          'assets/images/Maskot.png',
+                          fit: BoxFit.contain,
                           errorBuilder: (context, error, stackTrace) {
-                            // Fallback academic illustration graphic if asset is still loading
                             return Container(
                               color: AppColors.surfaceDark,
                               child: const Column(

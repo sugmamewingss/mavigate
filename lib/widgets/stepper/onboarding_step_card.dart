@@ -191,7 +191,7 @@ class OnboardingStepCard extends StatelessWidget {
                       const Row(
                         children: [
                           Text(
-                            'Completed',
+                            'Selesai',
                             style: TextStyle(
                               fontSize: 12,
                               fontWeight: FontWeight.w700,

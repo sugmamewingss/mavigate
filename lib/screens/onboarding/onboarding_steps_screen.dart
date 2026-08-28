@@ -5,21 +5,27 @@ import '../../widgets/common/onboarding_indicator.dart';
 import '../../widgets/stepper/onboarding_step_card.dart';
 
 class OnboardingStepsScreen extends StatelessWidget {
+  final bool isPriorityCompleted;
   final bool isScheduleCompleted;
   final VoidCallback? onBack;
+  final VoidCallback? onAturPrioritas;
   final VoidCallback? onBuildSchedule;
   final VoidCallback? onNext;
 
   const OnboardingStepsScreen({
     super.key,
+    this.isPriorityCompleted = true, // Default to true or controlled by state
     this.isScheduleCompleted = false,
     this.onBack,
+    this.onAturPrioritas,
     this.onBuildSchedule,
     this.onNext,
   });
 
   @override
   Widget build(BuildContext context) {
+    final allCompleted = isPriorityCompleted && isScheduleCompleted;
+
     return Scaffold(
       backgroundColor: AppColors.backgroundDark,
       body: SafeArea(
@@ -31,7 +37,7 @@ class OnboardingStepsScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Top: Back (Kembali) Button
+                  // Back (Kembali) Button
                   Align(
                     alignment: Alignment.centerLeft,
                     child: TextButton(
@@ -54,14 +60,13 @@ class OnboardingStepsScreen extends StatelessWidget {
 
                   const SizedBox(height: 12),
 
-                  // Headline & Timeline (Scrollable)
+                  // Stepper Content
                   Expanded(
                     child: SingleChildScrollView(
                       physics: const BouncingScrollPhysics(),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          // Headline
                           const Text(
                             'Ayo siapkan kamu kuliah!',
                             style: TextStyle(
@@ -71,10 +76,7 @@ class OnboardingStepsScreen extends StatelessWidget {
                               letterSpacing: -0.4,
                             ),
                           ),
-
                           const SizedBox(height: 8),
-
-                          // Subtitle
                           const Text(
                             '3 langkah sederhana membantu memulai kehidupan kampus dengan rencana lebih jelas.',
                             style: TextStyle(
@@ -84,7 +86,6 @@ class OnboardingStepsScreen extends StatelessWidget {
                               height: 1.45,
                             ),
                           ),
-
                           const SizedBox(height: 24),
 
                           // Step 01: Kamu resmi MABA!
@@ -98,60 +99,61 @@ class OnboardingStepsScreen extends StatelessWidget {
                                 'Kamu telah mempelajari dasar-dasar KRS, SKS, jadwal, dan kurikulum. Sekarang, mari kita praktikkan pengetahuan tersebut.',
                           ),
 
-                          // Step 02: Buat Jadwal Kelasmu!
+                          // Step 02: Atur Prioritasmu!
                           OnboardingStepCard(
                             stepNumber: '02',
-                            icon: isScheduleCompleted
-                                ? Icons.check_circle_outline_rounded
-                                : Icons.star_outline_rounded,
-                            status: isScheduleCompleted
+                            icon: Icons.star_outline_rounded,
+                            status: isPriorityCompleted
                                 ? StepStatus.completed
                                 : StepStatus.active,
-                            title: 'Buat Jadwal Kelasmu!',
-                            highlightText: isScheduleCompleted
-                                ? 'Jadwal kelas berhasil dibuat!'
-                                : 'Ubah kelas menjadi rencana nyata.',
+                            title: 'Atur Prioritasmu!',
+                            highlightText: 'Tentukan apa yang paling penting',
                             description:
-                                'Jadwal perkuliahan bisa jadi fleksibel. Masukkan jadwal kelas ke dalam kalender agar kamu tahu bagaimana waktu kamu digunakan.',
-                            actionButtonText: 'Buat Jadwal',
-                            onActionButtonPressed: onBuildSchedule,
+                                'Kuliah terdiri dari berbagai kelas, tugas, kegiatan, dan waktu pribadi. Belajarlah menentukan kegiatan yang patut mendapat perhatian kamu dulu.',
+                            actionButtonText: isPriorityCompleted ? null : 'Atur Prioritas',
+                            onActionButtonPressed: onAturPrioritas,
                           ),
 
-                          // Step 03: Tentukan Target
+                          // Step 03: Buat Jadwal Kelasmu!
                           OnboardingStepCard(
                             stepNumber: '03',
                             icon: isScheduleCompleted
-                                ? Icons.flag_outlined
-                                : Icons.lock_outline_rounded,
+                                ? Icons.check_circle_outline_rounded
+                                : (isPriorityCompleted
+                                    ? Icons.calendar_today_outlined
+                                    : Icons.lock_outline_rounded),
                             status: isScheduleCompleted
-                                ? StepStatus.active
-                                : StepStatus.locked,
-                            title: 'Tentukan Target Kuliahmu!',
-                            highlightText: isScheduleCompleted
-                                ? 'Atur target IPK & milestone pertamamu.'
-                                : 'Ubah kelas menjadi rencana nyata.',
+                                ? StepStatus.completed
+                                : (isPriorityCompleted
+                                    ? StepStatus.active
+                                    : StepStatus.locked),
+                            title: 'Buat Jadwal Kelasmu!',
+                            highlightText: 'Ubah kelas menjadi rencana nyata.',
                             description:
                                 'Jadwal perkuliahan bisa jadi fleksibel. Masukkan jadwal kelas ke dalam kalender agar kamu tahu bagaimana waktu kamu digunakan.',
+                            actionButtonText: isScheduleCompleted
+                                ? null
+                                : (isPriorityCompleted ? 'Buat Jadwal' : null),
+                            onActionButtonPressed: onBuildSchedule,
                             isLast: true,
                           ),
-
                           const SizedBox(height: 16),
                         ],
                       ),
                     ),
                   ),
 
-                  // Bottom Action Button: "Ayo Tentukan Targetmu >"
+                  // Button with Shake Animation when Locked
                   LockedAnimatedButton(
                     text: 'Ayo Tentukan Targetmu',
-                    isLocked: !isScheduleCompleted,
+                    isLocked: !allCompleted,
                     onPressed: onNext,
-                    lockedMessage: 'Selesaikan step "Buat Jadwal" terlebih dahulu! 🔒',
+                    lockedMessage: 'Selesaikan semua langkah terlebih dahulu! 🔒',
                   ),
 
                   const SizedBox(height: 20),
 
-                  // Page Indicator (5 Dots, index 2 aktif)
+                  // Indicator (Dot 3 active)
                   const Center(
                     child: OnboardingIndicator(
                       totalDots: 5,
