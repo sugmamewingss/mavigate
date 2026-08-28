@@ -58,16 +58,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
       return;
     }
 
-    // Direct registration success
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('Akun berhasil dibuat! Selamat datang, $name 🎉'),
-        backgroundColor: const Color(0xFF10B981),
-        behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-      ),
-    );
-
     Navigator.of(context).pushAndRemoveUntil(
       MaterialPageRoute(
         builder: (context) => HomeScreen(

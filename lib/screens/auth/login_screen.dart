@@ -40,15 +40,6 @@ class _LoginScreenState extends State<LoginScreen> {
     }
 
     // Direct login simulation
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('Selamat datang kembali, $email! 👋'),
-        backgroundColor: const Color(0xFF10B981),
-        behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-      ),
-    );
-
     Navigator.of(context).pushReplacement(
       MaterialPageRoute(
         builder: (context) => HomeScreen(userEmail: email),

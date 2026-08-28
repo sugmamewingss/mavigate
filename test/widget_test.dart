@@ -14,6 +14,7 @@ void main() {
     // 1. Build app
     await tester.pumpWidget(const MaviGateApp());
     expect(find.text('MaviGate'), findsOneWidget);
+    expect(find.text('Academic Planner Pilihanmu!'), findsOneWidget);
 
     // Let splash finish
     await tester.pump(const Duration(seconds: 3));
@@ -113,8 +114,8 @@ void main() {
 
     // Fill registration form
     final textFields = find.byType(TextField);
-    await tester.enterText(textFields.at(0), 'Mavigator MABA');
-    await tester.enterText(textFields.at(1), 'maba@mavigate.com');
+    await tester.enterText(textFields.at(0), 'Raven');
+    await tester.enterText(textFields.at(1), 'raven@mavigate.com');
     await tester.enterText(textFields.at(2), 'secret123');
     await tester.enterText(textFields.at(3), 'secret123');
 
@@ -124,8 +125,27 @@ void main() {
     await tester.pumpAndSettle();
 
     // 10. Dashboard: Home Screen (Beranda)
-    expect(find.text('Halo, Mavigator MABA! 👋'), findsOneWidget);
-    expect(find.text('maba@mavigate.com'), findsOneWidget);
-    expect(find.text('Rencana Akademik Kamu'), findsOneWidget);
+    expect(find.text('Selamat pagi, Raven 👋'), findsOneWidget);
+    expect(find.text('Ayo jadikan hari ini bermakna.'), findsOneWidget);
+    expect(find.text('Achiever Journey'), findsOneWidget);
+    expect(find.text('40% selesai'), findsOneWidget);
+    expect(find.text('Mulai perjalanan mu!'), findsOneWidget);
+    expect(find.text('Langkah Kamu Selanjutnya'), findsOneWidget);
+    expect(find.text('Lanjutkan Journey'), findsOneWidget);
+    expect(find.text('Journey | Unit 1'), findsOneWidget);
+    expect(find.text('Orientation'), findsOneWidget);
+    expect(find.text('Calender'), findsOneWidget);
+    expect(find.text('Teruslah melangkah maju'), findsOneWidget);
+
+    // Verify taskbar items
+    expect(find.text('Beranda'), findsOneWidget);
+    expect(find.text('Journey'), findsOneWidget);
+    expect(find.text('Kalender'), findsOneWidget);
+    expect(find.text('Profil'), findsOneWidget);
+
+    // Tap "Lanjutkan Journey" to switch to Journey tab
+    await tester.tap(find.text('Lanjutkan Journey'), warnIfMissed: false);
+    await tester.pumpAndSettle();
+    expect(find.text('Journey Section'), findsOneWidget);
   });
 }

@@ -61,39 +61,44 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.primaryDark,
+      backgroundColor: AppColors.backgroundDark,
       body: Center(
         child: FadeTransition(
           opacity: _fadeAnimation,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              // Mascot Logo
               ScaleTransition(
                 scale: _scaleAnimation,
-                child: Container(
-                  width: 96,
-                  height: 96,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(28),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withValues(alpha: 0.15),
-                        blurRadius: 24,
-                        offset: const Offset(0, 10),
-                      ),
-                    ],
-                  ),
-                  child: const Center(
-                    child: Icon(
-                      Icons.navigation_rounded,
-                      size: 52,
-                      color: AppColors.primary,
-                    ),
+                child: SizedBox(
+                  width: 120,
+                  height: 120,
+                  child: Image.asset(
+                    'assets/images/Maskot.png',
+                    fit: BoxFit.contain,
+                    errorBuilder: (context, error, stackTrace) {
+                      return Container(
+                        width: 96,
+                        height: 96,
+                        decoration: BoxDecoration(
+                          color: AppColors.surfaceDark,
+                          shape: BoxShape.circle,
+                        ),
+                        child: const Icon(
+                          Icons.school_rounded,
+                          size: 52,
+                          color: AppColors.electricBlue,
+                        ),
+                      );
+                    },
                   ),
                 ),
               ),
-              const SizedBox(height: 24),
+
+              const SizedBox(height: 18),
+
+              // Title "MaviGate"
               const Text(
                 'MaviGate',
                 style: TextStyle(
@@ -103,19 +108,30 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
                   letterSpacing: -0.5,
                 ),
               ),
-              const SizedBox(height: 8),
+
+              const SizedBox(height: 10),
+
+              // Subtitle Tag Pill: "Academic Planner Pilihanmu!"
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 7),
                 decoration: BoxDecoration(
-                  color: AppColors.secondary,
+                  color: const Color(0xFFFF6363),
                   borderRadius: BorderRadius.circular(20),
+                  boxShadow: [
+                    BoxShadow(
+                      color: const Color(0xFFFF6363).withValues(alpha: 0.35),
+                      blurRadius: 14,
+                      offset: const Offset(0, 4),
+                    ),
+                  ],
                 ),
                 child: const Text(
-                  'Adulting, but make it fun ✨',
+                  'Academic Planner Pilihanmu!',
                   style: TextStyle(
                     fontSize: 13,
                     fontWeight: FontWeight.w700,
                     color: Colors.white,
+                    letterSpacing: 0.2,
                   ),
                 ),
               ),
