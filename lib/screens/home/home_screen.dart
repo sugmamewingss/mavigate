@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import '../calendar/calendar_screen.dart';
 import '../journey/journey_screen.dart';
+import '../profile/profile_screen.dart';
 import '../../core/theme/app_colors.dart';
 import '../../widgets/cards/achiever_journey_card.dart';
 import '../../widgets/cards/journey_unit_item_card.dart';
@@ -59,19 +61,14 @@ class _HomeScreenState extends State<HomeScreen> {
                   // Tab 1: Journey (Live Dashboard)
                   const JourneyScreen(),
 
-                  // Tab 2: Kalender
-                  _buildPlaceholderTab(
-                    icon: Icons.calendar_today_rounded,
-                    title: 'Kalender Section',
-                    description: 'Jadwal dan aktivitas perkuliahan kamu.',
-                  ),
+                  // Tab 2: Kalender (Live Schedule & Add Schedule)
+                  const CalendarScreen(),
 
-                  // Tab 3: Profil
-                  _buildPlaceholderTab(
-                    icon: Icons.person_rounded,
-                    title: 'Profil Pengguna',
-                    description:
-                        'Kelola data diri, target semester, dan pengaturan akun.',
+                  // Tab 3: Profil (Live Profile Dashboard)
+                  ProfileScreen(
+                    userName: widget.userName,
+                    userEmail: widget.userEmail,
+                    onNavigateToJourney: _goToJourney,
                   ),
                 ],
               ),
@@ -336,54 +333,5 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
-
-  Widget _buildPlaceholderTab({
-    required IconData icon,
-    required String title,
-    required String description,
-  }) {
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(24.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-              width: 72,
-              height: 72,
-              decoration: BoxDecoration(
-                color: AppColors.surfaceDark,
-                shape: BoxShape.circle,
-                border: Border.all(color: AppColors.borderDark),
-              ),
-              child: Icon(
-                icon,
-                size: 36,
-                color: const Color(0xFF60A5FA),
-              ),
-            ),
-            const SizedBox(height: 18),
-            Text(
-              title,
-              style: const TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w700,
-                color: Colors.white,
-              ),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              description,
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                fontSize: 13,
-                color: AppColors.textSecondaryDark,
-                height: 1.4,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
 }
+

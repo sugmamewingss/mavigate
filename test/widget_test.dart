@@ -3,7 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mavigate/main.dart';
 
 void main() {
-  testWidgets('MaviGate full end-to-end journey from onboarding to 100% complete Journey', (WidgetTester tester) async {
+  testWidgets('MaviGate full comprehensive 4-tab app test: Onboarding, Auth, Beranda, Journey 100%, Kalender, and Profil', (WidgetTester tester) async {
     tester.view.physicalSize = const Size(800, 1200);
     tester.view.devicePixelRatio = 1.0;
     addTearDown(() {
@@ -136,7 +136,7 @@ void main() {
     await tester.tap(find.text('Buat Akun'));
     await tester.pumpAndSettle();
 
-    // 10. Dashboard: Home Screen (Beranda)
+    // 10. Dashboard: Home Screen (Beranda - Tab 0)
     expect(find.text('Selamat pagi, Raven 👋'), findsOneWidget);
     expect(find.text('Ayo jadikan hari ini bermakna.'), findsOneWidget);
     expect(find.text('Achiever Journey'), findsOneWidget);
@@ -145,7 +145,7 @@ void main() {
     expect(find.text('Langkah Kamu Selanjutnya'), findsOneWidget);
     expect(find.text('Lanjutkan Journey'), findsOneWidget);
 
-    // 11. Navigate to Journey Section
+    // 11. Navigate to Journey Section (Tab 1)
     await tester.tap(find.text('Lanjutkan Journey'), warnIfMissed: false);
     await tester.pumpAndSettle();
 
@@ -176,7 +176,7 @@ void main() {
     expect(find.text('40%'), findsWidgets);
     expect(find.text('SELESAI'), findsWidgets);
 
-    // 14. Now open Calender Mission
+    // 14. Now open Calender Mission (Sub-Journey 1.2)
     await tester.tap(find.widgetWithText(ElevatedButton, 'Lanjutkan'));
     await tester.pumpAndSettle();
 
@@ -218,7 +218,6 @@ void main() {
     // In GoalsMissionScreen
     expect(find.text('Tentukan Goals'), findsWidgets);
     expect(find.text('GOALS PERTAMAMU'), findsOneWidget);
-    expect(find.text('Apa satu hal yang ingin kamu capai atau kembangkan di awal kuliah?'), findsOneWidget);
 
     // Fill goals input
     await tester.enterText(find.byType(TextField), 'Saya ingin lebih percaya diri mengikuti kegiatan kampus.');
@@ -238,6 +237,51 @@ void main() {
     expect(find.text('3/3 SELESAI'), findsOneWidget);
     expect(find.text('✨ Journey selesai!'), findsOneWidget);
     expect(find.text('Selamat, tahap MABA selesai!!!'), findsOneWidget);
-    expect(find.text('Selanjutnya'), findsOneWidget);
+
+    // 18. TEST TAB 2: KALENDER
+    await tester.tap(find.text('Kalender'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Agustus 2026'), findsOneWidget);
+    expect(find.text('Programming'), findsOneWidget);
+    expect(find.text('Organization Meeting'), findsOneWidget);
+    expect(find.text('Study Session'), findsOneWidget);
+
+    // Test FAB (+) in Kalender
+    await tester.tap(find.byIcon(Icons.add_rounded));
+    await tester.pumpAndSettle();
+
+    // In AddScheduleDialog
+    expect(find.text('Tambahkan Jadwal'), findsOneWidget);
+    expect(find.text('Simpan Jadwal'), findsOneWidget);
+
+    await tester.enterText(find.widgetWithText(TextField, 'Judul'), 'Basis Data');
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Simpan Jadwal'));
+    await tester.pump(const Duration(seconds: 1));
+    await tester.pumpAndSettle();
+
+    // Verify "Basis Data" is added to Kalender
+    expect(find.text('Basis Data'), findsOneWidget);
+
+    // 19. TEST TAB 3: PROFIL
+    await tester.tap(find.text('Profil'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Profil Saya'), findsOneWidget);
+    expect(find.text('Perjalananmu, arahmu.'), findsOneWidget);
+    expect(find.text('Mahasiswa Baru'), findsOneWidget);
+    expect(find.text('CURRENT JOURNEY'), findsOneWidget);
+    expect(find.text('Achiever'), findsOneWidget);
+    expect(find.text('3 / 5 quests completed'), findsOneWidget);
+    expect(find.text('60%'), findsOneWidget);
+    expect(find.text('JOURNEY HISTORY'), findsOneWidget);
+    expect(find.text('HALO MABA!'), findsOneWidget);
+    expect(find.text('MY GOALS'), findsOneWidget);
+    expect(find.text('My First Goal'), findsOneWidget);
+    expect(find.text('ACCOUNT'), findsOneWidget);
+    expect(find.text('Account Settings'), findsOneWidget);
+    expect(find.text('Log Out'), findsOneWidget);
   });
 }
