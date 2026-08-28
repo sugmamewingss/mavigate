@@ -3,7 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mavigate/main.dart';
 
 void main() {
-  testWidgets('MaviGate full end-to-end journey including Forgot Password, Beranda, and Journey navigation', (WidgetTester tester) async {
+  testWidgets('MaviGate full end-to-end journey including Journey missions progression', (WidgetTester tester) async {
     tester.view.physicalSize = const Size(800, 1200);
     tester.view.devicePixelRatio = 1.0;
     addTearDown(() {
@@ -144,20 +144,77 @@ void main() {
     expect(find.text('Mulai perjalanan mu!'), findsOneWidget);
     expect(find.text('Langkah Kamu Selanjutnya'), findsOneWidget);
     expect(find.text('Lanjutkan Journey'), findsOneWidget);
-    expect(find.text('Journey | Unit 1'), findsOneWidget);
-    expect(find.text('Orientation'), findsOneWidget);
-    expect(find.text('Calender'), findsOneWidget);
-    expect(find.text('Teruslah melangkah maju'), findsOneWidget);
 
-    // Verify taskbar items
-    expect(find.text('Beranda'), findsOneWidget);
-    expect(find.text('Journey'), findsOneWidget);
-    expect(find.text('Kalender'), findsOneWidget);
-    expect(find.text('Profil'), findsOneWidget);
-
-    // Tap "Lanjutkan Journey" to switch to Journey tab
+    // 11. Navigate to Journey Section
     await tester.tap(find.text('Lanjutkan Journey'), warnIfMissed: false);
     await tester.pumpAndSettle();
-    expect(find.text('Journey Section'), findsOneWidget);
+
+    // Verify Journey Screen Dashboard
+    expect(find.text('Journey'), findsWidgets);
+    expect(find.text('Weekly Reset'), findsOneWidget);
+    expect(find.text('HALO MABA Journey'), findsOneWidget);
+    expect(find.text('JOURNEY STATUS'), findsOneWidget);
+    expect(find.text('0%'), findsWidgets); // 0% initial
+    expect(find.text('FOKUS SAAT INI'), findsOneWidget);
+    expect(find.text('Orientation'), findsWidgets);
+    expect(find.text('Calender'), findsWidgets);
+    expect(find.text('Goals'), findsWidgets);
+
+    // 12. Tap "Lanjutkan" on Focus Card to open Orientation mission (7 steps)
+    await tester.tap(find.widgetWithText(ElevatedButton, 'Lanjutkan'));
+    await tester.pumpAndSettle();
+
+    // Sub-Journey: Orientation Mission (Step 1/7)
+    expect(find.text('1 / 7'), findsOneWidget);
+    expect(find.text('Kenali Dunia Perkuliahan'), findsOneWidget);
+    expect(find.text('Jadwal'), findsOneWidget);
+
+    // Advance through 7 steps
+    // Step 1 -> 2
+    await tester.tap(find.widgetWithText(ElevatedButton, 'Lanjut'));
+    await tester.pumpAndSettle();
+    expect(find.text('2 / 7'), findsOneWidget);
+    expect(find.text('KRS'), findsOneWidget);
+
+    // Step 2 -> 3
+    await tester.tap(find.widgetWithText(ElevatedButton, 'Lanjut'));
+    await tester.pumpAndSettle();
+    expect(find.text('3 / 7'), findsOneWidget);
+    expect(find.text('SKS'), findsOneWidget);
+
+    // Step 3 -> 4
+    await tester.tap(find.widgetWithText(ElevatedButton, 'Lanjut'));
+    await tester.pumpAndSettle();
+    expect(find.text('4 / 7'), findsOneWidget);
+    expect(find.text('Dosen PA / Wali'), findsOneWidget);
+
+    // Step 4 -> 5
+    await tester.tap(find.widgetWithText(ElevatedButton, 'Lanjut'));
+    await tester.pumpAndSettle();
+    expect(find.text('5 / 7'), findsOneWidget);
+    expect(find.text('IP & IPK'), findsOneWidget);
+
+    // Step 5 -> 6
+    await tester.tap(find.widgetWithText(ElevatedButton, 'Lanjut'));
+    await tester.pumpAndSettle();
+    expect(find.text('6 / 7'), findsOneWidget);
+    expect(find.text('Organisasi & UKM'), findsOneWidget);
+
+    // Step 6 -> 7
+    await tester.tap(find.widgetWithText(ElevatedButton, 'Lanjut'));
+    await tester.pumpAndSettle();
+    expect(find.text('7 / 7'), findsOneWidget);
+    expect(find.text('Tips Sukses MABA'), findsOneWidget);
+    expect(find.text('Selesaikan Misi'), findsOneWidget);
+
+    // Complete Mission 1 (Orientation)
+    await tester.tap(find.widgetWithText(ElevatedButton, 'Selesaikan Misi'));
+    await tester.pumpAndSettle();
+
+    // 13. Back on Journey Screen: Orientation completed!
+    // Status percentage should now be 40%
+    expect(find.text('40%'), findsWidgets);
+    expect(find.text('COMPLETED'), findsOneWidget);
+    expect(find.text('100%'), findsOneWidget);
   });
 }

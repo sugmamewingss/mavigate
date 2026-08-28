@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../journey/journey_screen.dart';
 import '../../core/theme/app_colors.dart';
 import '../../widgets/cards/achiever_journey_card.dart';
 import '../../widgets/cards/journey_unit_item_card.dart';
@@ -55,13 +56,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   // Tab 0: Beranda
                   _buildBerandaTab(displayName, userInitial),
 
-                  // Tab 1: Journey
-                  _buildPlaceholderTab(
-                    icon: Icons.explore_rounded,
-                    title: 'Journey Section',
-                    description:
-                        'Section Journey sedang disiapkan dan akan kita lanjutkan berikutnya! 🧭',
-                  ),
+                  // Tab 1: Journey (Live Dashboard)
+                  const JourneyScreen(),
 
                   // Tab 2: Kalender
                   _buildPlaceholderTab(
