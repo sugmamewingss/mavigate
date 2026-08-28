@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import '../../models/schedule_item.dart';
+import '../auth/login_screen.dart';
 import 'build_schedule_screen.dart';
 import 'onboarding_basics_screen.dart';
 import 'onboarding_completion_screen.dart';
 import 'onboarding_landing_screen.dart';
 import 'onboarding_steps_screen.dart';
+import 'target_selection_screen.dart';
 
 class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({super.key});
@@ -35,12 +37,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     );
   }
 
-  void _onSkip() {
-    // Navigate directly to Auth Page (Register/Login)
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Menuju Halaman Auth (Login / Register)...'),
-        duration: Duration(seconds: 1),
+  void _navigateToAuth() {
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute(
+        builder: (context) => const LoginScreen(),
       ),
     );
   }
@@ -57,12 +57,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               _isScheduleCompleted = updatedList.isNotEmpty;
             });
           },
-          onNext: () {
-            setState(() {
-              _isScheduleCompleted = true;
-            });
-            _navigateToPage(3); // Navigate to completion screen ("🎉 Selamat, tahap MABA selesai!!!")
-          },
         ),
       ),
     );
@@ -72,6 +66,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         _userSchedule = result;
         _isScheduleCompleted = result.isNotEmpty;
       });
+      if (result.isNotEmpty) {
+        _navigateToPage(3);
+      }
     }
   }
 
@@ -84,7 +81,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         // Page 1 (Index 0): Landing Screen with Mascot
         OnboardingLandingScreen(
           onNext: () => _navigateToPage(1),
-          onSkip: _onSkip,
+          onSkip: _navigateToAuth,
         ),
 
         // Page 2 (Index 1): Academic Basics Screen
@@ -125,44 +122,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           },
         ),
 
-        // Page 5 (Index 4): Placeholder for Next Screen (Target Goals / Auth)
-        Scaffold(
-          backgroundColor: const Color(0xFF0B1120),
-          body: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Text(
-                  'Onboarding Halaman 5 (Target Goals)',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 22,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox(height: 12),
-                const Text(
-                  'Siap menerima screenshot Figma berikutnya! 🚀',
-                  style: TextStyle(color: Color(0xFF94A3B8)),
-                ),
-                const SizedBox(height: 24),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    OutlinedButton(
-                      onPressed: () => _navigateToPage(3),
-                      child: const Text('Kembali'),
-                    ),
-                    const SizedBox(width: 12),
-                    ElevatedButton(
-                      onPressed: _onSkip,
-                      child: const Text('Ke Auth (Login/Register)'),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
+        // Page 5 (Index 4): Target Selection Screen (Intensive / Balanced)
+        TargetSelectionScreen(
+          onBack: () => _navigateToPage(3),
+          onNext: _navigateToAuth,
         ),
       ],
     );

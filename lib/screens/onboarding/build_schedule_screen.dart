@@ -507,7 +507,6 @@ class _BuildScheduleScreenState extends State<BuildScheduleScreen> {
                     isLocked: !hasClasses,
                     onPressed: () {
                       ScaffoldMessenger.of(context).removeCurrentSnackBar();
-                      widget.onNext?.call();
                       Navigator.of(context).pop(_scheduleList);
                     },
                     lockedMessage: 'Tambahkan minimal 1 kelas ke jadwalmu! 📚',
