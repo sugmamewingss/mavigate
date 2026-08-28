@@ -4,6 +4,7 @@ import '../../models/journey_model.dart';
 import '../../widgets/cards/journey_focus_card.dart';
 import '../../widgets/cards/journey_hero_card.dart';
 import '../../widgets/cards/sub_journey_card.dart';
+import 'calender_mission_screen.dart';
 import 'sub_journey_mission_screen.dart';
 
 class JourneyScreen extends StatefulWidget {
@@ -98,6 +99,23 @@ class _JourneyScreenState extends State<JourneyScreen> {
       return;
     }
 
+    if (item.id == 'calender') {
+      final result = await Navigator.of(context).push<bool>(
+        MaterialPageRoute(
+          builder: (context) => CalenderMissionScreen(
+            onMissionCompleted: () {
+              _markMissionCompleted('calender');
+            },
+          ),
+        ),
+      );
+
+      if (result == true && mounted) {
+        _markMissionCompleted('calender');
+      }
+      return;
+    }
+
     List<MissionStepData> missionSteps;
 
     if (item.id == 'orientation') {
@@ -145,27 +163,6 @@ class _JourneyScreenState extends State<JourneyScreen> {
               'Pelajari fungsi Pusat Layanan Akademik & Halo FILKOM dan bagaimana informasi ini membantu kamu mengetahui waktu perkuliahan.',
         ),
       ];
-    } else if (item.id == 'calender') {
-      missionSteps = const [
-        MissionStepData(
-          topic: 'Kalender Akademik',
-          title: 'Manajemen Waktu Kuliah',
-          description:
-              'Pahami tanggal penting seperti KRS, UTS, UAS, dan batas akhir pembayaran kuliah.',
-        ),
-        MissionStepData(
-          topic: 'Target Harian',
-          title: 'Manajemen Waktu Kuliah',
-          description:
-              'Atur jadwal harian agar tugas kuliah dan istirahat seimbang dengan teratur.',
-        ),
-        MissionStepData(
-          topic: 'Reminder & Alarm',
-          title: 'Manajemen Waktu Kuliah',
-          description:
-              'Gunakan fitur notifikasi untuk menghindari keterlambatan pengumpulan tugas kuliah.',
-        ),
-      ];
     } else {
       missionSteps = const [
         MissionStepData(
@@ -192,6 +189,7 @@ class _JourneyScreenState extends State<JourneyScreen> {
           missionSubtitle: item.id == 'orientation'
               ? '7 hal yang perlu kamu kenal sebagai MABA.'
               : 'Langkah terstruktur menuju kesuksesan akademik.',
+          subJourneyCode: item.stepNumber,
           steps: missionSteps,
           onMissionCompleted: () {
             _markMissionCompleted(item.id);
