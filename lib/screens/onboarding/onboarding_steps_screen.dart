@@ -14,7 +14,7 @@ class OnboardingStepsScreen extends StatelessWidget {
 
   const OnboardingStepsScreen({
     super.key,
-    this.isPriorityCompleted = true, // Default to true or controlled by state
+    this.isPriorityCompleted = false,
     this.isScheduleCompleted = false,
     this.onBack,
     this.onAturPrioritas,
@@ -119,9 +119,7 @@ class OnboardingStepsScreen extends StatelessWidget {
                             stepNumber: '03',
                             icon: isScheduleCompleted
                                 ? Icons.check_circle_outline_rounded
-                                : (isPriorityCompleted
-                                    ? Icons.calendar_today_outlined
-                                    : Icons.lock_outline_rounded),
+                                : Icons.lock_outline_rounded,
                             status: isScheduleCompleted
                                 ? StepStatus.completed
                                 : (isPriorityCompleted

@@ -113,7 +113,9 @@ class OnboardingStepCard extends StatelessWidget {
                       decoration: BoxDecoration(
                         color: status == StepStatus.completed
                             ? const Color(0xFF10B981)
-                            : const Color(0xFF1E293B),
+                            : (status == StepStatus.active
+                                ? AppColors.electricBlue
+                                : const Color(0xFF1E293B)),
                         borderRadius: BorderRadius.circular(1),
                       ),
                     ),

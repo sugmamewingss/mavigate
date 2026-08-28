@@ -18,7 +18,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
   // Onboarding state
   List<ScheduleItem> _userSchedule = [];
-  bool _isPriorityCompleted = true; // Set to true to seamlessly show priority completed as requested
+  bool _isPriorityCompleted = false;
   bool _isScheduleCompleted = false;
 
   @override
@@ -46,6 +46,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   }
 
   void _openBuildSchedule() async {
+    ScaffoldMessenger.of(context).removeCurrentSnackBar();
     final result = await Navigator.of(context).push<List<ScheduleItem>>(
       MaterialPageRoute(
         builder: (context) => BuildScheduleScreen(
@@ -98,6 +99,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           isScheduleCompleted: _isScheduleCompleted,
           onBack: () => _navigateToPage(1),
           onAturPrioritas: () {
+            ScaffoldMessenger.of(context).removeCurrentSnackBar();
             setState(() {
               _isPriorityCompleted = true;
             });
@@ -105,7 +107,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               const SnackBar(
                 content: Text('✓ Rencana prioritas berhasil disimpan!'),
                 backgroundColor: Color(0xFF10B981),
-                duration: Duration(seconds: 1),
+                duration: Duration(milliseconds: 1200),
               ),
             );
           },

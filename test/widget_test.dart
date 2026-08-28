@@ -33,7 +33,16 @@ void main() {
     expect(find.text('Ayo siapkan kamu kuliah!'), findsOneWidget);
     expect(find.text('Kamu resmi MABA!'), findsOneWidget);
     expect(find.text('Atur Prioritasmu!'), findsOneWidget);
-    expect(find.text('Buat Jadwal Kelasmu!'), findsOneWidget);
+    expect(find.text('Atur Prioritas'), findsOneWidget);
+    expect(find.text('Terkunci'), findsOneWidget);
+
+    // Tap "Atur Prioritas" on Step 02 to unlock Step 03
+    await tester.tap(find.text('Atur Prioritas'));
+    await tester.pump(const Duration(milliseconds: 500));
+    await tester.pumpAndSettle();
+
+    // Verify Step 02 is completed and Step 03 is now unlocked with "Buat Jadwal" button
+    expect(find.text('Buat Jadwal'), findsOneWidget);
 
     // Tap "Buat Jadwal" to enter Build Your Schedule screen
     await tester.ensureVisible(find.text('Buat Jadwal'));
