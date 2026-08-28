@@ -28,7 +28,7 @@ class SubJourneyCard extends StatelessWidget {
       iconCircleBg = const Color(0xFF064E3B);
       iconColor = const Color(0xFF10B981);
       statusIcon = Icons.check_rounded;
-      statusBadgeText = 'COMPLETED';
+      statusBadgeText = 'SELESAI';
       statusBadgeColor = const Color(0xFF10B981);
     } else if (isActive) {
       iconCircleBg = const Color(0xFF1E2A44);

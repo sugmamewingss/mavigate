@@ -26,7 +26,7 @@ class JourneyHeroCard extends StatelessWidget {
     } else if (percentage < 100) {
       noteText = '✨ Sedikit lagi!';
     } else {
-      noteText = '🎉 Luar biasa, semua misi selesai!';
+      noteText = '✨ Journey selesai!';
     }
 
     return Container(
@@ -36,7 +36,9 @@ class JourneyHeroCard extends StatelessWidget {
         color: AppColors.surfaceDark,
         borderRadius: BorderRadius.circular(22),
         border: Border.all(
-          color: AppColors.borderDark,
+          color: isComplete
+              ? const Color(0xFF065F46)
+              : AppColors.borderDark,
           width: 1.2,
         ),
       ),
@@ -51,10 +53,12 @@ class JourneyHeroCard extends StatelessWidget {
               color: const Color(0xFF38202A),
               borderRadius: BorderRadius.circular(14),
             ),
-            child: const Center(
+            child: Center(
               child: Icon(
-                Icons.auto_stories_rounded,
-                color: Color(0xFFF87171),
+                isComplete
+                    ? Icons.school_rounded
+                    : Icons.auto_stories_rounded,
+                color: const Color(0xFFF87171),
                 size: 24,
               ),
             ),
@@ -73,18 +77,29 @@ class JourneyHeroCard extends StatelessWidget {
             ),
           ),
 
-          const SizedBox(height: 6),
-
-          // Description
-          Text(
-            description,
-            style: const TextStyle(
-              fontSize: 12.5,
-              fontWeight: FontWeight.w400,
-              color: AppColors.textSecondaryDark,
-              height: 1.4,
+          if (isComplete) ...[
+            const SizedBox(height: 4),
+            const Text(
+              'SELESAI',
+              style: TextStyle(
+                fontSize: 11,
+                fontWeight: FontWeight.w800,
+                color: Color(0xFF10B981),
+                letterSpacing: 0.6,
+              ),
             ),
-          ),
+          ] else ...[
+            const SizedBox(height: 6),
+            Text(
+              description,
+              style: const TextStyle(
+                fontSize: 12.5,
+                fontWeight: FontWeight.w400,
+                color: AppColors.textSecondaryDark,
+                height: 1.4,
+              ),
+            ),
+          ],
 
           const SizedBox(height: 20),
 
@@ -92,12 +107,14 @@ class JourneyHeroCard extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text(
-                'JOURNEY STATUS',
+              Text(
+                isComplete ? '3/3 SELESAI' : 'JOURNEY STATUS',
                 style: TextStyle(
                   fontSize: 11,
                   fontWeight: FontWeight.w700,
-                  color: Color(0xFF94A3B8),
+                  color: isComplete
+                      ? const Color(0xFF94A3B8)
+                      : const Color(0xFF94A3B8),
                   letterSpacing: 0.6,
                 ),
               ),
@@ -133,13 +150,15 @@ class JourneyHeroCard extends StatelessWidget {
 
           const SizedBox(height: 10),
 
-          // Note Text (e.g. "✨ Sedikit lagi!")
+          // Note Text (e.g. "✨ Journey selesai!")
           Text(
             noteText,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 11.5,
               fontWeight: FontWeight.w600,
-              color: Color(0xFF94A3B8),
+              color: isComplete
+                  ? const Color(0xFFFBBF24)
+                  : const Color(0xFF94A3B8),
             ),
           ),
         ],

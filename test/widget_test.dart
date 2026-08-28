@@ -3,7 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mavigate/main.dart';
 
 void main() {
-  testWidgets('MaviGate full end-to-end journey including Orientation and Calender sub-journeys', (WidgetTester tester) async {
+  testWidgets('MaviGate full end-to-end journey from onboarding to 100% complete Journey', (WidgetTester tester) async {
     tester.view.physicalSize = const Size(800, 1200);
     tester.view.devicePixelRatio = 1.0;
     addTearDown(() {
@@ -174,7 +174,7 @@ void main() {
 
     // 13. Back on Journey Screen: Orientation completed (40%), Calender is ACTIVE
     expect(find.text('40%'), findsWidgets);
-    expect(find.text('COMPLETED'), findsOneWidget);
+    expect(find.text('SELESAI'), findsWidgets);
 
     // 14. Now open Calender Mission
     await tester.tap(find.widgetWithText(ElevatedButton, 'Lanjutkan'));
@@ -205,14 +205,39 @@ void main() {
 
     // Verify Completion Dialog for Sub-Journey 1.2
     expect(find.text('Sub-Journey 1.2 selesai! 🎉'), findsOneWidget);
-    expect(find.text('Kalendermu sudah mulai terisi. Sekarang kamu punya gambaran yang lebih jelas tentang waktumu.'), findsOneWidget);
-
-    // Tap "Lanjutkan →"
     await tester.tap(find.text('Lanjutkan →'));
     await tester.pumpAndSettle();
 
-    // 15. Back on Journey Screen: Status is now 80%!
+    // 15. Back on Journey Screen: Status is now 80%! Goals is ACTIVE!
     expect(find.text('80%'), findsWidgets);
-    expect(find.text('COMPLETED'), findsNWidgets(2));
+
+    // 16. Now open Goals Mission (Sub-Journey 1.3)
+    await tester.tap(find.widgetWithText(ElevatedButton, 'Lanjutkan'));
+    await tester.pumpAndSettle();
+
+    // In GoalsMissionScreen
+    expect(find.text('Tentukan Goals'), findsWidgets);
+    expect(find.text('GOALS PERTAMAMU'), findsOneWidget);
+    expect(find.text('Apa satu hal yang ingin kamu capai atau kembangkan di awal kuliah?'), findsOneWidget);
+
+    // Fill goals input
+    await tester.enterText(find.byType(TextField), 'Saya ingin lebih percaya diri mengikuti kegiatan kampus.');
+    await tester.pumpAndSettle();
+
+    // Tap "Selesai ✓"
+    await tester.tap(find.widgetWithText(ElevatedButton, 'Selesai'));
+    await tester.pumpAndSettle();
+
+    // Verify Completion Dialog for Sub-Journey 1.3
+    expect(find.text('Sub-Journey 1.3 selesai! 🎉'), findsOneWidget);
+    await tester.tap(find.text('Lanjutkan →'));
+    await tester.pumpAndSettle();
+
+    // 17. 100% COMPLETE STATE ON JOURNEY DASHBOARD!
+    expect(find.text('100%'), findsWidgets);
+    expect(find.text('3/3 SELESAI'), findsOneWidget);
+    expect(find.text('✨ Journey selesai!'), findsOneWidget);
+    expect(find.text('Selamat, tahap MABA selesai!!!'), findsOneWidget);
+    expect(find.text('Selanjutnya'), findsOneWidget);
   });
 }

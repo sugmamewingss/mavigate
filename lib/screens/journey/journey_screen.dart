@@ -5,6 +5,7 @@ import '../../widgets/cards/journey_focus_card.dart';
 import '../../widgets/cards/journey_hero_card.dart';
 import '../../widgets/cards/sub_journey_card.dart';
 import 'calender_mission_screen.dart';
+import 'goals_mission_screen.dart';
 import 'sub_journey_mission_screen.dart';
 
 class JourneyScreen extends StatefulWidget {
@@ -112,6 +113,23 @@ class _JourneyScreenState extends State<JourneyScreen> {
 
       if (result == true && mounted) {
         _markMissionCompleted('calender');
+      }
+      return;
+    }
+
+    if (item.id == 'goals') {
+      final result = await Navigator.of(context).push<bool>(
+        MaterialPageRoute(
+          builder: (context) => GoalsMissionScreen(
+            onMissionCompleted: () {
+              _markMissionCompleted('goals');
+            },
+          ),
+        ),
+      );
+
+      if (result == true && mounted) {
+        _markMissionCompleted('goals');
       }
       return;
     }

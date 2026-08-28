@@ -17,6 +17,102 @@ class JourneyFocusCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (isAllCompleted) {
+      return Container(
+        width: double.infinity,
+        padding: const EdgeInsets.all(22),
+        decoration: BoxDecoration(
+          color: AppColors.surfaceDark,
+          borderRadius: BorderRadius.circular(22),
+          border: Border.all(
+            color: const Color(0xFF065F46),
+            width: 1.2,
+          ),
+        ),
+        child: Column(
+          children: [
+            // Green Star Badge Icon
+            Container(
+              width: 52,
+              height: 52,
+              decoration: const BoxDecoration(
+                color: Color(0xFF064E3B),
+                shape: BoxShape.circle,
+              ),
+              child: const Center(
+                child: Icon(
+                  Icons.star_rounded,
+                  color: Color(0xFF10B981),
+                  size: 30,
+                ),
+              ),
+            ),
+
+            const SizedBox(height: 14),
+
+            // Title "Selamat, tahap MABA selesai!!!"
+            const Text(
+              'Selamat, tahap MABA selesai!!!',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 17,
+                fontWeight: FontWeight.w800,
+                color: Colors.white,
+                letterSpacing: -0.3,
+              ),
+            ),
+
+            const SizedBox(height: 8),
+
+            // Subtitle Description
+            const Text(
+              'Kamu sudah mengenal dasar perkuliahan, mulai mengatur waktumu, dan menentukan goal pertamamu.',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 12.5,
+                fontWeight: FontWeight.w400,
+                color: AppColors.textSecondaryDark,
+                height: 1.4,
+              ),
+            ),
+
+            const SizedBox(height: 18),
+
+            // Button: "Selanjutnya >"
+            SizedBox(
+              width: double.infinity,
+              height: 48,
+              child: ElevatedButton(
+                onPressed: onContinue,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.electricBlue,
+                  foregroundColor: Colors.white,
+                  elevation: 0,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(14),
+                  ),
+                ),
+                child: const Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Selanjutnya',
+                      style: TextStyle(
+                        fontSize: 14.5,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                    SizedBox(width: 6),
+                    Icon(Icons.chevron_right_rounded, size: 20),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(18),
@@ -24,9 +120,7 @@ class JourneyFocusCard extends StatelessWidget {
         color: AppColors.surfaceDark,
         borderRadius: BorderRadius.circular(22),
         border: Border.all(
-          color: isAllCompleted
-              ? const Color(0xFF065F46)
-              : const Color(0xFF1E3A8A),
+          color: const Color(0xFF1E3A8A),
           width: 1.2,
         ),
       ),
@@ -45,14 +139,10 @@ class JourneyFocusCard extends StatelessWidget {
                   color: Color(0xFF1E2A44),
                   shape: BoxShape.circle,
                 ),
-                child: Center(
+                child: const Center(
                   child: Icon(
-                    isAllCompleted
-                        ? Icons.check_circle_rounded
-                        : Icons.explore_outlined,
-                    color: isAllCompleted
-                        ? const Color(0xFF10B981)
-                        : const Color(0xFF60A5FA),
+                    Icons.explore_outlined,
+                    color: Color(0xFF60A5FA),
                     size: 22,
                   ),
                 ),
@@ -61,25 +151,19 @@ class JourneyFocusCard extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
                 decoration: BoxDecoration(
-                  color: isAllCompleted
-                      ? const Color(0xFF064E3B)
-                      : const Color(0xFF1E293B),
+                  color: const Color(0xFF1E293B),
                   borderRadius: BorderRadius.circular(20),
                   border: Border.all(
-                    color: isAllCompleted
-                        ? const Color(0xFF059669)
-                        : const Color(0xFF2563EB),
+                    color: const Color(0xFF2563EB),
                     width: 1,
                   ),
                 ),
-                child: Text(
-                  isAllCompleted ? 'COMPLETED' : 'ACTION REQUIRED',
+                child: const Text(
+                  'ACTION REQUIRED',
                   style: TextStyle(
                     fontSize: 10,
                     fontWeight: FontWeight.w800,
-                    color: isAllCompleted
-                        ? const Color(0xFF34D399)
-                        : const Color(0xFF60A5FA),
+                    color: Color(0xFF60A5FA),
                     letterSpacing: 0.6,
                   ),
                 ),
@@ -122,27 +206,25 @@ class JourneyFocusCard extends StatelessWidget {
             child: ElevatedButton(
               onPressed: onContinue,
               style: ElevatedButton.styleFrom(
-                backgroundColor: isAllCompleted
-                    ? const Color(0xFF10B981)
-                    : AppColors.electricBlue,
+                backgroundColor: AppColors.electricBlue,
                 foregroundColor: Colors.white,
                 elevation: 0,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(14),
                 ),
               ),
-              child: Row(
+              child: const Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    isAllCompleted ? 'Buka Kembali Misi' : 'Lanjutkan',
-                    style: const TextStyle(
+                    'Lanjutkan',
+                    style: TextStyle(
                       fontSize: 14.5,
                       fontWeight: FontWeight.w700,
                     ),
                   ),
-                  const SizedBox(width: 6),
-                  const Icon(Icons.chevron_right_rounded, size: 20),
+                  SizedBox(width: 6),
+                  Icon(Icons.chevron_right_rounded, size: 20),
                 ],
               ),
             ),
